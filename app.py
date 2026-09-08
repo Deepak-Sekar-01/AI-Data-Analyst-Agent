@@ -65,11 +65,10 @@ if uploaded_file is not None:
 
     # NOTE: same file-hash guard pattern as Project 3 — only reload state
     # when the actual file content changes, not on every Streamlit rerun.
-    if st.session_state.get("file_hash") != file_hash:
+    if st.session_state.get("file_hash") != file_hash or "df" not in st.session_state:
         st.session_state["file_hash"] = file_hash
         st.session_state["df"] = pd.read_csv(uploaded_file)
         st.session_state.pop("agent_summary", None)
-
     df = st.session_state["df"]
 
     st.markdown('<div class="label">Preview — first 5 rows</div>', unsafe_allow_html=True)
