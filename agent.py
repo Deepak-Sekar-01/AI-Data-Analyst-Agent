@@ -47,6 +47,12 @@ def run_agent(question: str, df, api_key: str):
         "can get a new ID. Also check whether rows are identical across all "
         "their other columns (excluding the ID column), and state clearly "
         "which check(s) you performed."
+        "When asked about patterns, trends, or relationships between variables, "
+        "only report one as meaningful if it holds across multiple months or "
+        "regions — state how many data points support it. Never claim a cause "
+        "('X caused Y'); report correlations only, and say so explicitly. If a "
+        "pattern rests on very few data points (e.g., a single order), say that "
+        "plainly and flag it as possibly noise, not a real trend."
         f"\n\nDataframe info:\n{get_dataframe_info(df)}"
     )
 

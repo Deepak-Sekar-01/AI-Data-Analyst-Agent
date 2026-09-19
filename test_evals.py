@@ -15,13 +15,14 @@ from agent import run_agent
 load_dotenv()
 API_KEY = os.getenv("GROQ_API_KEY")
 DF = pd.read_csv("test_sales_data.csv")
+DF2 = pd.read_csv("test_correlation_data.csv")
 
 results = []
 
 
-def run_question(question):
+def run_question(question, df=None):
     stdout_parts, summary, error, figures = [], None, None, 0
-    for event in run_agent(question, DF.copy(), API_KEY):
+    for event in run_agent(question, (df if df is not None else DF).copy(), API_KEY):
         if event["type"] == "tool_call":
             stdout_parts.append(event["result"].get("stdout", "") or "")
             figures += len(event["result"].get("figures", []))
@@ -84,6 +85,12 @@ check("Q8 reports missing column, invents nothing", not error and contains_any(s
 
 _, _, error, figures = run_question("Show me a chart of revenue by category")
 check("Q9 chart actually generated", not error and figures > 0)
+
+stdout, summary, error, _ = run_question("Is there a product with an unusually high return rate? Is this likely a real issue or could it be random variation?", df=DF2)
+check("Q10 identifies Bluetooth Speaker", not error and "bluetooth" in (stdout + (summary or "")).lower())
+
+stdout, summary, error, _ = run_question("Which specific order had the highest return rate, and does that indicate a broader problem?", df=DF2)
+check("Q11 flags order 205 as isolated, not systemic", not error and contains_any(summary or "", ["single order", "one order", "isolated", "not a systemic", "not systemic", "particular order"]))
 
 print()
 passed = sum(1 for _, ok in results if ok)
