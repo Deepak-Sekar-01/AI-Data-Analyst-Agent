@@ -42,6 +42,11 @@ def run_agent(question: str, df, api_key: str):
         "calls — only assignments to df (e.g. df['newcol'] = ...) carry "
         "forward. If you need a value in a later step, store it on df or "
         "recompute it within the same call where you use it."
+        "When checking for duplicates, do not rely on an ID column alone — "
+        "an ID match only catches exact re-entries, and a re-logged record "
+        "can get a new ID. Also check whether rows are identical across all "
+        "their other columns (excluding the ID column), and state clearly "
+        "which check(s) you performed."
         f"\n\nDataframe info:\n{get_dataframe_info(df)}"
     )
 
