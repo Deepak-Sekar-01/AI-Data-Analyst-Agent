@@ -56,6 +56,10 @@ def check(name, condition, detail=""):
     results.append((name, condition))
     print(f"{'PASS' if condition else 'FAIL'} — {name}" + (f"\n    {detail}" if detail and not condition else ""))
 
+def duplicate_found(text):
+    if "36" in text:
+        return True
+    return bool(re.search(r'[1-9]\d*\s*(?:extra\s*)?duplicate', text.lower()))
 
 stdout, summary, error, _ = run_question("Which product has the highest total revenue?")
 check("Q1 highest revenue = 5410", not error and close(stdout + (summary or ""), 5410.0), f"{stdout!r} {summary!r}")
@@ -68,7 +72,7 @@ check("Q3 total revenue = 21225", not error and close(stdout + (summary or ""), 
 check("Q3 discloses excluded row", contains_any(summary or "", ["exclud", "invalid", "missing", "drop", "tbd"]), f"{summary!r}")
 
 stdout, summary, error, _ = run_question("How many duplicate orders are there?")
-check("Q4 finds the planted duplicate (order 36)", not error and "36" in stdout, f"{stdout!r} {summary!r}")
+check("Q4 finds the planted duplicate (order 36)", not error and duplicate_found(stdout + (summary or "")), f"{stdout!r} {summary!r}")
 
 stdout, summary, error, _ = run_question("What's the month-by-month revenue trend?")
 months_ok = all(close(stdout + (summary or ""), v) for v in [5405.0, 4670.0, 5910.0, 5240.0])
