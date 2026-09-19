@@ -71,8 +71,8 @@ stdout, summary, error, _ = run_question("What's the total revenue across all or
 check("Q3 total revenue = 21225", not error and close(stdout + (summary or ""), 21225.0))
 check("Q3 discloses excluded row", contains_any(summary or "", ["exclud", "invalid", "missing", "drop", "tbd"]), f"{summary!r}")
 
-stdout, summary, error, _ = run_question("How many duplicate orders are there?")
-check("Q4 finds the planted duplicate (order 36)", not error and duplicate_found(stdout + (summary or "")), f"{stdout!r} {summary!r}")
+stdout, summary, error, _ = run_question("How many EXTRA duplicate rows are there beyond the first occurrence, comparing all columns except order_id? End your answer with exactly: DUPLICATE_COUNT=<number>")
+check("Q4 finds the planted duplicate (1 extra row)", not error and bool(re.search(r'DUPLICATE_COUNT\s*=\s*1\b', (summary or '').upper())), f"error={error!r} summary={summary!r}")
 
 stdout, summary, error, _ = run_question("What's the month-by-month revenue trend?")
 months_ok = all(close(stdout + (summary or ""), v) for v in [5405.0, 4670.0, 5910.0, 5240.0])
