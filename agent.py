@@ -38,6 +38,10 @@ def run_agent(question: str, df, api_key: str):
         "invalid values in one column, do not drop entire rows from "
         "metrics based on other columns that were still valid — only "
         "exclude a row from the specific calculation its bad value affects."
+        "Variables you define do NOT persist between separate run_python "
+        "calls — only assignments to df (e.g. df['newcol'] = ...) carry "
+        "forward. If you need a value in a later step, store it on df or "
+        "recompute it within the same call where you use it."
         f"\n\nDataframe info:\n{get_dataframe_info(df)}"
     )
 
