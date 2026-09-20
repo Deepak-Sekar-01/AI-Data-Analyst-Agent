@@ -2,7 +2,7 @@
 
 Upload a CSV. Ask a question in plain English. The agent decides what code to write, runs it in a sandboxed environment, reads the actual output, and answers from what it computed.
 
-**[Live demo →](https://ai-data-analyst-agent-fn7okexuhbsb9pnvz3svl2.streamlit.app/)**
+[Live demo →](https://ai-data-analyst-agent-fn7okexuhbsb9pnvz3svl2.streamlit.app/)
 
 ## How it works
 
